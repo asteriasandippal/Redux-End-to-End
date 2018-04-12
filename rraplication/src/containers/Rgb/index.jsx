@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import RgbSlider from './RgbSlider';
 import ShowBox from '../../components/ShowBox';
 
-class Rgb extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            r: 244,
-            g: 158,
-            b: 66
-        }
-    }
+import * as actions from '../../actions/rgbActions';
 
+class Rgb extends Component {
 
     render() {
-        const {r, g, b} = this.state;
-        const update = color => val => this.setState({[color] : val});
+        const {r, g, b, updateColor} = this.props;
+        const update = color => value => updateColor(color, value);
         return (
         <div className="App">
             <ShowBox r={r} g={g} b={b} />
@@ -45,4 +39,13 @@ class Rgb extends Component {
     }
 }
 
-export default Rgb;
+export default connect(
+    state => ({
+        r: state.rgb.r,
+        g: state.rgb.g,
+        b: state.rgb.b
+    }),
+    {
+        updateColor: actions.updateColor
+    }
+)(Rgb);
